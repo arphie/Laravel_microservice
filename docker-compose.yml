@@ -1,0 +1,55 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - public_net
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - WATCHPACK_POLLING=true
+
+  gateway_service:
+    build: ./gateway_service
+    ports:
+      - "8002:8000" # This is the ONLY entry point for the API
+    networks:
+      - public_net
+      - private_net # Gateway bridges the two networks
+    volumes:
+      - ./gateway_service:/var/www
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/database/database.sqlite
+
+  auth_service:
+    build: ./auth_service
+    # PORTS REMOVED: No one can access this directly via localhost:8001
+    networks:
+      - private_net
+    volumes:
+      - ./auth_service:/var/www
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/database/database.sqlite
+
+  ip_management_service:
+    build: ./ip_management_service
+    # PORTS REMOVED: Completely hidden from the outside
+    networks:
+      - private_net
+    volumes:
+      - ./ip_management_service:/var/www
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/database/database.sqlite
+
+networks:
+  public_net: # Accessible to the browser/frontend
+    driver: bridge
+  private_net: # Completely isolated from the host
+    internal: true # Optional: prevents outbound internet access for added security
+    driver: bridge
