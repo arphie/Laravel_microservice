@@ -44,4 +44,5 @@ class IpManagement extends Controller
         $response = Http::get('http://ip_management_service:8003/api/ip');
         return response()->json($response->json(), $response->status());
     }
+    
 }
