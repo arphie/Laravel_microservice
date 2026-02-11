@@ -19,22 +19,27 @@ Route::post('/refresh-token', [AuthController::class, 'refresh']);
 /**
  * IP Management Routes
  */
-Routes::prefix('ip')->group(function () {
-    Route::get('/', function () {
-        /**
-         * Get IP addresses from IP Management Service and return the response as
-         * JSON with appropriate status code
-         */
-        $response = Http::get('http://ip_management_service:8003/api/ip');
-        return response()->json($response->json(), $response->status());
-    });
+Route::middleware(['auth.jwt'])->group(function () {
 
-    /**
-     * Create a new IP address by sending a POST request to the IP Management Service with the request
-     * data and return the response as JSON with appropriate status code
-     */
-    Route::post('/', function (Request $request) {
-        $response = Http::post('http://ip_management_service:8003/api/ip', $request->all());
+    // Forwarding logic for IP Management
+    Route::match(['get', 'post', 'patch'], '/ip-management/{path}', function (Request $request, $path) {
+        
+        // Internal URL of the microservice (Docker service name)
+        $url = "http://ip_management_service:8000/api/$path";
+
+        // Forward the request with the User ID header
+        // Use ->withBody() or pass the array to the method call
+            $response = Http::withHeaders([
+                'X-User-Id' => $request->header('X-User-Id'),
+                'Accept'    => 'application/json',
+            ])
+            ->send($request->method(), $url, [
+                'query' => $request->query(), // Passes ?page=1 etc.
+                'json'  => $request->json()->all(), // Passes the actual body
+            ]);
+
         return response()->json($response->json(), $response->status());
-    });
+
+    })->where('path', '.*');
+
 });

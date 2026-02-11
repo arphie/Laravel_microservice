@@ -7,7 +7,7 @@ interface AuthServiceInterface
     /**
      * Login user and return access token and refresh token
      */
-    public function login(Request $request): ?array;
+    public function login(string $email, string $password): ?array;
 
     /**
      * Refresh access token using refresh token

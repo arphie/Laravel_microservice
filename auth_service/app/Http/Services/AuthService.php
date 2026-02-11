@@ -12,41 +12,41 @@ class AuthService implements AuthServiceInterface
     /**
      * Login user and return access token and refresh token
      */
-    public function login($request): ?array
+    public function login(string $email, string $password): ?array
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
 
-        
-        if ($validator->fails()) {
-            return ['status' => 422, 'message' => 'Validation error', 'data' => $validator->errors()];
-        }
+        $token = auth('api')->attempt(['email' => $email, 'password' => $password]);
 
-        $credentials = $validator->validated();
-
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (! $token) {
             return ['status' => 401, 'message' => 'Unauthorized', 'data' => null];
         }
+        /**
+         * get user data
+         */
+        $user = auth('api')->user();
 
         $refreshToken = $this->createRefreshToken();
 
-        return ['status' => 200, 'message' => 'Login successful', 'data' => $token ? $this->respondWithToken($token, $refreshToken) : null];
+        return [
+            'status' => 200, 
+            'message' => 'Login successful', 
+            'data' => [
+                'token_info' => $this->respondWithToken($token, $refreshToken),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role, // Since we added roles earlier
+                ]
+            ]
+        ];
     }
 
     /**
      * Refresh access token using refresh token
      */
-    public function refresh($request): ?array
+    public function refresh($refreshToken): ?array
     {
-        // 1. Get the token from the 'refresh_token' cookie instead of the header
-        $refreshToken = $request->cookie('refresh_token');
-
-        if (!$refreshToken) {
-            return ['status' => 401, 'message' => 'Refresh token missing', 'data' => null];
-        }
-
         try {
             // 2. Set the token manually into the JWT Auth manager
             $decoded = auth('api_refresh')->setToken($refreshToken)->check(true);
