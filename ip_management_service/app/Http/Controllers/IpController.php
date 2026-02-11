@@ -34,9 +34,28 @@ class IpController extends Controller
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $request->validate(['label' => 'required|string']);
-        
-        $this->ipService->updateLabel($id, $request->label);
-        return response()->json(['message' => 'Label updated successfully']);
+        $validated = $request->validate([
+            'address' => 'sometimes|ip',
+            'label'   => 'sometimes|string|max:255',
+            'comment' => 'sometimes|nullable|string',
+        ]);
+
+        if (empty($validated)) {
+            return response()->json(['message' => 'No data provided for update'], 422);
+        }
+
+        $this->ipService->updateIp($id, $validated);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'IP record updated successfully'
+        ]);
+    }
+
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $this->ipService->deleteIp($id);
+
+        return response()->json(['message' => 'IP address deleted successfully']);
     }
 }

@@ -22,7 +22,7 @@ Route::post('/refresh-token', [AuthController::class, 'refresh']);
 Route::middleware(['auth.jwt'])->group(function () {
 
     // Forwarding logic for IP Management
-    Route::match(['get', 'post', 'patch'], '/ip-management/{path}', function (Request $request, $path) {
+    Route::match(['get', 'post', 'patch', 'delete'], '/ip-management/{path}', function (Request $request, $path) {
         
         // Internal URL of the microservice (Docker service name)
         $url = "http://ip_management_service:8000/api/$path";

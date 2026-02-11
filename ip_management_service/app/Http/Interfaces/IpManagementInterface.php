@@ -8,5 +8,7 @@ interface IpManagementInterface
     
     public function addIp(array $data, int $userId): object;
     
-    public function updateLabel(int $id, string $newLabel): bool;
+    public function updateIp(int $id, array $data): bool;
+
+    public function deleteIp(int $id): bool;
 }

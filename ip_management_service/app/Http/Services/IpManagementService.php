@@ -22,9 +22,17 @@ class IpManagementService implements IpManagementInterface
         ]);
     }
 
-    public function updateLabel(int $id, string $newLabel): bool
+    public function updateIp(int $id, array $data): bool
     {
         $ip = IpAddress::findOrFail($id);
-        return $ip->update(['label' => $newLabel]);
+        // Eloquent's update() ignores keys that aren't in $fillable 
+        // and only changes values that are actually different.
+        return $ip->update($data);
+    }
+
+    public function deleteIp(int $id): bool
+    {
+        $ip = IpAddress::findOrFail($id);
+        return $ip->delete();
     }
 }
