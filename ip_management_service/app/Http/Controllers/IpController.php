@@ -18,7 +18,7 @@ class IpController extends Controller
     }
 
     public function store(Request $request): JsonResponse
-    {   return response()->json(['message' => $request->all()]);
+    { 
         $validated = $request->validate([
             'address' => 'required|ip', // Laravel handles IPv4 and IPv6 automatically
             'label'   => 'required|string|max:255',
