@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('user_role');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('user_role')->nullable(); // For Req 2 & 3 (Role tracking)
             $table->string('session_id'); // For Req 2 & 3 (Session tracking)
             $table->string('ip_address_id')->nullable(); // Extracted from URL for Req 2
             $table->string('action');     // e.g., 'LOGIN', 'UPDATE_IP', 'DELETE_IP'
