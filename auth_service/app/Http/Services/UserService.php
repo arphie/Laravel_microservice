@@ -9,13 +9,20 @@ use Illuminate\Support\Facades\Cookie;
 
 class UserService implements UserServiceInterface
 {
+    
     /**
      * Register a new user and return access token and refresh token
      */
-    public function register($credentials): ?array
+    public function register(string $name, string $email, string $password): ?array
     {
-        // --- IGNORE ---
-        return true;
+        // create a new user
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ]);
+
+        return $user;
     }
 
     /**

@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'api/*', // Disable CSRF for API routes (standard for microservices)
+        ]);
+        
         $middleware->alias([
             'auth.jwt' => \App\Http\Middleware\GatewayAuth::class,
             'ip.access' => \App\Http\Middleware\IpAccessControl::class,

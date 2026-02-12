@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Interfaces\UserServiceInterface;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected UserServiceInterface $userService
+    ) {}
+
     // store user data in the database
     public function store(Request $request)
     {
@@ -16,14 +21,11 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // create a new user
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ]);
+       $data = $this->userService->register($validatedData['name'], $validatedData['email'], $validatedData['password']);
 
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+        
+
+        return response()->json(['message' => 'User created successfully', 'user' => $data], 201);
     }
 
     // update user data in the database
