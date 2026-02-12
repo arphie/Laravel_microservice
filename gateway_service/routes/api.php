@@ -19,7 +19,7 @@ Route::post('/refresh-token', [AuthController::class, 'refresh']);
 /**
  * IP Management Routes
  */
-Route::middleware(['auth.jwt'])->group(function () {
+Route::middleware(['auth.jwt', 'ip.access'])->group(function () {
 
     // Forwarding logic for IP Management
     Route::match(['get', 'post', 'patch', 'delete'], '/ip-management/{path}', function (Request $request, $path) {
