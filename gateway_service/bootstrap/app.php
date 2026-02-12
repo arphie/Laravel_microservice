@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.jwt' => \App\Http\Middleware\GatewayAuth::class,
             'ip.access' => \App\Http\Middleware\IpAccessControl::class,
+            'audit.log'  => \App\Http\Middleware\GlobalAuditLogger::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
