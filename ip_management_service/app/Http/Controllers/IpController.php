@@ -14,7 +14,11 @@ class IpController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->ipService->getAllIps());
+        return response()->json([
+            'status' => 200,
+            'message' => 'IP addresses retrieved successfully',
+            'data' => $this->ipService->getAllIps()
+        ], 200);
     }
 
     public function store(Request $request): JsonResponse

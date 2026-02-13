@@ -34,8 +34,10 @@ export default function RootLayout({
       <body
         className={`${robotoCondensed.variable} antialiased`}
       >
-        <Toaster position="top-right" />
-        {children}
+        <div className="w-full max-w-[980px] mx-auto">
+          <Toaster position="top-right" />
+          {children}
+        </div>
       </body>
     </html>
   );
