@@ -10,7 +10,11 @@ services:
       - /app/node_modules
       - /app/.next
     environment:
-      - WATCHPACK_POLLING=true
+      - WATCHPACK_POLLING=true,
+      - NODE_ENV=development
+      - PYTHONUNBUFFERED=1 # Common for log flushing
+      - CI=true # Sometimes tricks Next.js into standard stdout
+    tty: true
 
   gateway_service:
     build: ./gateway_service

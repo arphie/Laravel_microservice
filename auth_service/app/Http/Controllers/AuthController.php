@@ -55,7 +55,7 @@ class AuthController extends Controller
      */
     public function refresh(Request $request, UtilityService $utilityService): JsonResponse
     {
-        $refreshToken = $request->cookie('refresh_token');
+        $refreshToken = $request->cookie('refresh_token') ?? $request->input('refresh_token');
 
         if (!$refreshToken) {
             return $utilityService->apiResponse(null, 'Refresh token missing', 401);

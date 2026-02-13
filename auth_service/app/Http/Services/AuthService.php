@@ -68,24 +68,21 @@ class AuthService implements AuthServiceInterface
             $newRefreshToken = $this->createRefreshToken(); // Ensure this generates a new JWT string
 
             // 3. Prepare response with a NEW cookie
-            $response = response()->json([
-                'status' => 200, 
-                'message' => 'Token refreshed', 
-                'data' => ['access_token' => $newAccessToken]
-            ]);
+            // $response = response()->json([
+            //     'status' => 200, 
+            //     'message' => 'Token refreshed', 
+            //     'data' => ['access_token' => $newAccessToken]
+            // ]);
 
-            // Attach the new refresh token as a cookie
-            return $response->withCookie(cookie(
-                'refresh_token', 
-                $newRefreshToken, 
-                60 * 24 * 7, // 1 week
-                '/', 
-                null, 
-                true, // Secure
-                true, // HttpOnly
-                false, 
-                'Lax'
-            ));
+            // To this:
+            return [
+                'status' => 200,
+                'message' => 'Token refreshed',
+                'data' => [
+                    'access_token' => $newAccessToken,
+                    'refresh_token' => $newRefreshToken
+                ]
+            ];
 
         } catch (\PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException $e) {
             return ['status' => 401, 'message' => 'Invalid refresh token', 'data' => null];
