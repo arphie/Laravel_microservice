@@ -30,11 +30,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="en" data-theme="business">
-      <body
-        className={`${robotoCondensed.variable} antialiased`}
-      >
-        <div className="w-full max-w-[980px] mx-auto">
+    <html lang="en" data-theme="cupcake">
+      <body className={`${robotoCondensed.variable} antialiased`}>
+        <div className="">
           <Toaster position="top-right" />
           {children}
         </div>

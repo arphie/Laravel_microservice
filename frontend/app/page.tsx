@@ -2,32 +2,12 @@
 
 import React, { useState, FormEvent, useActionState } from 'react';
 import toast from 'react-hot-toast';
-import { loginUser } from '@/lib/api';
 import { loginAction } from '@/lib/actions/auth';
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-
-	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setIsLoading(true);
-		try {
-			const data = await loginUser({ email, password });
-			toast.success('Login successful!');
-			// TODO: Handle successful login, e.g., redirect or save token
-			console.log('Success:', data);
-		} catch (error) {
-			if (error instanceof Error) {
-			toast.error(error.message);
-			} else {
-			toast.error('An unknown error occurred.');
-			}
-		} finally {
-			setIsLoading(false);
-		}
-	};
 
 	const [state, formAction, isPending] = useActionState(loginAction, null);
 

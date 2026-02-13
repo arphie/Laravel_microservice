@@ -35,8 +35,8 @@ class IpAddress extends Model
     {
         return [
             'user_id' => 'integer',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at' => 'datetime:M d, Y H:i',
+            'updated_at' => 'datetime:M d, Y H:i',
         ];
     }
 

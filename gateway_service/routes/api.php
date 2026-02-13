@@ -42,6 +42,8 @@ Route::middleware(['audit.log'])->group(function () {
 
         })->where('path', '.*');
 
+        // Route::get('/audit-logs', []);
+
     });
 });
 

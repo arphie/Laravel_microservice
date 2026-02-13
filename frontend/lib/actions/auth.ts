@@ -7,6 +7,13 @@ import { error } from 'node:console';
 
 import fs from 'fs';
 
+export interface User {
+	id: number;
+	name: string;
+	email: string;
+	role: 'admin' | 'user'; // Assuming these are the possible roles
+}
+
 export async function loginAction(prevState: any, formData: FormData) {
     const log = (msg: string) => fs.appendFileSync('debug.log', `${new Date().toISOString()} - ${msg}\n`);
     log("--- ACTION START ---");
@@ -24,16 +31,13 @@ export async function loginAction(prevState: any, formData: FormData) {
 				timeout: 5000 
 			}
 		);
-        
-        
-
-        
+		
 		const result = response.data;
-        log(JSON.stringify(result));
-
+		
 		// 2. Extract tokens from your specific JSON structure
 		// Result is already parsed as JSON by Axios
 		const { access_token, refresh_token, expires_in } = result.data.token_info.original;
+		const {id, name, role} = result.data.user;
 
 		// 3. Save to HTTP-Only Cookies
 		const cookieStore = await cookies();
@@ -47,6 +51,33 @@ export async function loginAction(prevState: any, formData: FormData) {
 		});
 
 		cookieStore.set('refresh_token', refresh_token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'lax',
+			maxAge: 60 * 60 * 24 * 7,
+			path: '/',
+		});
+
+		/**
+		 * pass on user details to cookie as well, so that we can access it on the client side without making another API call
+		 */
+		cookieStore.set('user_id', id, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'lax',
+			maxAge: 60 * 60 * 24 * 7,
+			path: '/',
+		});
+
+		cookieStore.set('user_name', name, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'lax',
+			maxAge: 60 * 60 * 24 * 7,
+			path: '/',
+		});
+
+		cookieStore.set('user_role', role, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',
