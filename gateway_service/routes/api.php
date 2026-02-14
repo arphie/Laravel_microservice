@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuditController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -42,7 +43,7 @@ Route::middleware(['audit.log'])->group(function () {
 
         })->where('path', '.*');
 
-        // Route::get('/audit-logs', []);
+        Route::get('/audit-logs', [AuditController::class, 'index']);
 
     });
 });
