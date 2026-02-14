@@ -14,11 +14,11 @@ const mainmenu = async () => {
             </div>
             <div className=''>
                 <ul className='flex justify-end w-full gap-2'>
-                    <li><a href="/dashboard" className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200 no-underline">Dashboard</a></li>
+                    <li><a href="/dashboard" className="btn btn-neutral hover:btn-accent">Dashboard</a></li>
                     { (user_role === 'admin') && (
-                        <li><a href="/audit" className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200 no-underline">Audit</a></li>
+                        <li><a href="/audit" className="btn btn-neutral hover:btn-accent">Audit</a></li>
                     )}
-                    <li className="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200 no-underline"><a href="/logout">Logout</a></li>
+                    <li className="btn btn-neutral hover:btn-error"><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>

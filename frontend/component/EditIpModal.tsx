@@ -22,7 +22,7 @@ function SubmitButton() {
 		<button
 			type="submit"
 			disabled={pending}
-			className="w-full rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+			className="btn btn-info"
 		>
 			{pending ? 'Saving...' : 'Save Changes'}
 		</button>
@@ -49,21 +49,24 @@ const EditIpModal = ({ ip, isOpen, onClose }: EditIpModalProps) => {
 					<label htmlFor="address" className="block text-sm font-medium text-gray-700">
 						IP Address
 					</label>
-					<input type="text" id="address" name="address" required defaultValue={ip.address} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+					<input type="text" id="address" name="address" required defaultValue={ip.address} className="input input-bordered input-neutral w-full" />
 				</div>
 				<div>
 					<label htmlFor="label" className="block text-sm font-medium text-gray-700">
 						Label
 					</label>
-					<input type="text" id="label" name="label" required defaultValue={ip.label} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+					<input type="text" id="label" name="label" required defaultValue={ip.label} className="input input-bordered input-neutral w-full" />
 				</div>
 				<div>
 					<label htmlFor="comment" className="block text-sm font-medium text-gray-700">
 						Comment
 					</label>
-					<textarea id="comment" name="comment" rows={3} defaultValue={ip.comment || ''} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+					<textarea id="comment" name="comment" rows={3} defaultValue={ip.comment || ''} className="input input-bordered input-neutral w-full"></textarea>
 				</div>
-				<SubmitButton />
+				<div className='flex justify-end'>
+					<SubmitButton />
+				</div>
+				
 				{state?.message && state.message !== 'success' && (
 					<p className="text-sm text-red-600 mt-2">{state.message}</p>
 				)}

@@ -31,7 +31,7 @@ export default function RootLayout({
 }>): React.JSX.Element {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className={`${robotoCondensed.variable} antialiased`}>
+      <body className={`${robotoCondensed.variable} antialiased bg-base-100 text-base-content bg-base-100 min-h-screen`}>
         <div className="">
           <Toaster position="top-right" />
           {children}
